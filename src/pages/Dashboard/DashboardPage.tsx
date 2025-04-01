@@ -1,33 +1,36 @@
-import React from "react";
-import MissionSection from "./MissionSection";
-const HeroSection: React.FC = () => {
+import { useEffect } from 'react';
+import { useBlog } from '@/hooks/useBlog'; // Import the useBlog hook
+import { BlogResponseDTO } from '@/types/blogapp'; // Import the BlogResponseDTO type
+
+const  DashboardPage = () => {
+  const { blogs, getAllBlogs, isLoading } = useBlog(); // Use the custom hook to access BlogContext
+
+  useEffect(() => {
+    getAllBlogs(); // Fetch blogs on component mount
+  }, [getAllBlogs]);
+
   return (
-    <>
-      <div className="relative w-full h-screen flex items-center justify-center p-6 bg-[url('/BG1.png')] bg-cover bg-center mb-52">
-        <div className="text-center max-w-2xl text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Revolutionizing Agriculture <br /> With AgriConnect
-          </h1>
-          <p className="text-lg md:text-xl mb-6">
-            Unlock the potential of your land with cutting-edge sustainable
-            farming techniques. AgriConnect brings together modern innovations
-            and global expertise to cultivate success and growth.
-          </p>
-          <button className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-gray-100 transition">
-            Get Started
-          </button>
+    <div>
+      <h1 className="text-center text-3xl font-bold my-8">Latest Blogs</h1>
+      
+      {isLoading ? (
+        <p className="text-center">Loading blogs...</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+          {blogs.map((blog: BlogResponseDTO) => (
+            <div key={blog.id} className="border rounded-lg overflow-hidden shadow-lg">
+              
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-2">{blog.title}</h2>
+                <p className="text-gray-600 text-sm mb-4">{blog.content.substring(0, 100)}...</p>
+                <button className="text-blue-500 hover:text-blue-700">Read more</button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="absolute -bottom-20   left-1/2 transform -translate-x-1/2 w-full max-w-lg  rounded-lg shadow-lg p-2">
-          <img
-            src="/image.png"
-            alt="Agriculture field"
-            className="rounded-lg w-full object-cover"
-          />
-        </div>
-      </div>
-      <MissionSection />
-    </>
+      )}
+    </div>
   );
 };
 
-export default HeroSection;
+export default DashboardPage;
