@@ -8,6 +8,7 @@ pipeline {
     environment {
         EC2_USER = 'ubuntu'
         EC2_HOST = credentials('ec2-host')
+        NODE_OPTIONS = '--max-http-header-size=16384 --max-old-space-size=4096'
     }
     
     stages {
@@ -19,7 +20,27 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'npm install'
+                // Configure npm for better reliability
+                sh '''
+                    # Increase timeouts and retries
+                    npm config set fetch-retries 10
+                    npm config set fetch-retry-factor 2
+                    npm config set fetch-retry-mintimeout 60000
+                    npm config set fetch-retry-maxtimeout 180000
+                    
+                    # Based on npm-notice in curl response, use replicate registry
+                    npm config set registry https://replicate.npmjs.com/
+                    
+                    # Limit concurrent connections to avoid EventEmitter warnings
+                    npm config set maxsockets 5
+                    
+                    # Clean npm cache to start fresh
+                    npm cache clean --force
+                    
+                    # Install with more verbosity to see where it fails
+                    npm install --verbose
+                '''
+                
                 sh 'npm run build'
                 sh 'ls -la ./dist'
             }
