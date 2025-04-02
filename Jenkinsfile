@@ -19,9 +19,11 @@ pipeline {
          
          stage('Build') {
              steps {
-                 sh 'npm install'
-                 sh 'npm run build'
-                 sh 'ls -la ./dist'
+                sh 'rm -rf node_modules'
+                sh 'npm cache clean --force'
+                sh 'npm install'
+                sh 'npm run build'
+                sh 'ls -la ./dist'
              }
          }
          
