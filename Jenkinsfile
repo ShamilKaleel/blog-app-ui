@@ -19,9 +19,6 @@ pipeline {
          
          stage('Build') {
              steps {
-                sh 'rm -rf node_modules'
-                sh 'npm cache clean --force'
-                sh 'npm config set registry https://registry.npmjs.org/'
                 sh 'npm install'
                 sh 'npm run build'
                 sh 'ls -la ./dist'
