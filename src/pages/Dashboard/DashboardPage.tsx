@@ -14,7 +14,7 @@ const HeroSection: React.FC = () => {
             and global expertise to cultivate success and growth.
           </p>
           <button className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-gray-100 transition">
-            Get Started
+            go!!
           </button>
         </div>
         <div className="absolute -bottom-20   left-1/2 transform -translate-x-1/2 w-full max-w-lg  rounded-lg shadow-lg p-2">
