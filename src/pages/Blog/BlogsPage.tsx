@@ -59,7 +59,7 @@ export default function BlogsPage() {
         title: newBlog.title,
         content: newBlog.content,
         category: newBlog.category,
-        userID: 1, // You should replace this with the actual user ID from authState
+        userID: authState.id, // You should replace this with the actual user ID from authState
       });
 
       toast({
