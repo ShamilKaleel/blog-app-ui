@@ -9,7 +9,7 @@ import {
 import axiosInstance from "@/api/axiosInstance";
 
 interface User {
-  id:number;
+  id: number;
   username: string;
   roles: string[];
 }
@@ -24,8 +24,12 @@ const initialAuthState: AuthState = null;
 const authReducer = (_state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "SET_USER":
+      // Save to localStorage when setting user
+      localStorage.setItem("user", JSON.stringify(action.payload));
       return action.payload;
     case "CLEAR_USER":
+      // Clear from localStorage when logging out
+      localStorage.removeItem("user");
       return null;
     default:
       return null;
@@ -48,19 +52,35 @@ export const AuthContext = createContext<{
 
 // AuthProvider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [authState, dispatch] = useReducer(authReducer, initialAuthState);
+  // Try to get initial state from localStorage
+  const userFromStorage = localStorage.getItem("user");
+  const parsedUser = userFromStorage ? JSON.parse(userFromStorage) : null;
+  
+  const [authState, dispatch] = useReducer(
+    authReducer, 
+    parsedUser || initialAuthState
+  );
   const [isLording, setIsLording] = useState(true);
 
   useEffect(() => {
     setIsLording(true);
+    
+    // If we already have a user from localStorage, we can set loading to false faster
+    if (parsedUser) {
+      setIsLording(false);
+    }
+    
+    // Still verify with the server
     axiosInstance
-      .get("/auth/user")
+      .get("/users/user")
       .then(({ data }) => {
         const { username, roles,id } = data;
         dispatch({ type: "SET_USER", payload: { username, roles,id } });
       })
       .catch((error) => {
         console.error("Error fetching user data:", error.message);
+        // If server check fails, clear any stored user data
+        dispatch({ type: "CLEAR_USER" });
       })
       .finally(() => {
         setIsLording(false);
@@ -75,8 +95,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         username,
         password,
       });
+      
       const { username: user, roles,id } = response.data;
-      dispatch({ type: "SET_USER", payload: { username: user, roles,id} });
+      dispatch({ type: "SET_USER", payload: { username: user, roles,id } });
     } catch (error: any) {
       console.error("Login failed", error);
       throw error.response?.data?.message || "Invalid credentials";
@@ -93,6 +114,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: "CLEAR_USER" });
     } catch (error: any) {
       console.error("Logout failed", error);
+      // Even if server logout fails, clear the local state
+      dispatch({ type: "CLEAR_USER" });
       throw error.response?.data?.error || "Logout error";
     } finally {
       setIsLording(false);
@@ -106,7 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     roles: string[]
   ) => {
     try {
-      await axiosInstance.post("/auth/signup", {
+      await axiosInstance.post("/users/signup", {
         username,
         password,
         roles,
