@@ -215,11 +215,11 @@ const BlogHomePage: React.FC = () => {
           >
             {categories.map((category, index) => (
               <motion.div key={index} variants={itemVariants}>
-                <Link to={`/blogs/category/${category}`}>
+                
                   <div className="bg-card hover:bg-accent p-6 rounded-lg text-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer h-full flex flex-col justify-center items-center">
                     <span className="text-lg font-medium">{category}</span>
                   </div>
-                </Link>
+                
               </motion.div>
             ))}
           </motion.div>
