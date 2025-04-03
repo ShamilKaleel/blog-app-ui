@@ -1,15 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Lorder from "@/components/Lorder";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import Logo from "@/assets/images/Logo.png";
 import axiosInstance from "@/api/axiosInstance";
 // Schema validation using Zod
 const schema = z.object({
@@ -81,9 +78,7 @@ export default function SignupPage() {
         to="/"
         className="flex items-center gap-2 font-semibold  top-10 left-10 pb-10"
       >
-        <img src={Logo} className="h-10 w-10" />
-
-        <span className="text-2xl font-bold ">AgriConnect</span>
+        <span className="text-2xl font-bold ">Bloggie</span>
       </Link>
       <div className="px-8 py-16">
         <h1 className="text-2xl font-bold text-center mb-5">Signup</h1>

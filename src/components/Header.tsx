@@ -24,6 +24,7 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "Blogs", path: "/blogs" },
+    { title: "My Blogs", path: "/my-blogs" },
     // { title: "Jobs", path: "/jobs" },
   ];
 
@@ -37,9 +38,8 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
     <header className="fixed w-full flex justify-between items-center py-4 px-4 md:px-6 z-30 transition-all border-b bg-white dark:bg-black">
       {/* Logo Section */}
       <Link to="/" className="flex items-center gap-2 duration-300">
-        <img src={Logo} alt="Logo" className="h-8 w-8" />
         <span className="font-bold text-xl md:text-2xl text-primary">
-          AgriConnect
+          Bloggie
         </span>
       </Link>
 

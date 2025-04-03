@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axiosInstance from '@/api/axiosInstance';
-import { BlogResponseDTO, CreateBlogDTO } from '@/types/blogapp'; // Import your types
+import { BlogResponseDTO, CreateBlogDTO } from '@/types/blogapp'; 
 
 // Define the BlogContext type
 interface BlogContextType {
   blogs: BlogResponseDTO[];
   getAllBlogs: () => Promise<void>;
   getBlogById: (id: number) => Promise<BlogResponseDTO | null>;
+  getBlogsByUserId: (userId: number) => Promise<BlogResponseDTO[]>;
   createBlog: (data: CreateBlogDTO) => Promise<BlogResponseDTO>;
   updateBlog: (id: number, data: CreateBlogDTO) => Promise<BlogResponseDTO>;
   deleteBlog: (id: number) => Promise<void>;
@@ -24,7 +25,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
 
   // Get all blogs
   const getAllBlogs = async () => {
-    setIsLoading(false);
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get('/blogs/all');
       setBlogs(response.data);
@@ -48,12 +49,27 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
     }
   };
+  
+  // Get blogs by user ID
+  const getBlogsByUserId = async (userId: number) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get(`/blogs/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching blogs by user ID", error);
+      return [];
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Create a new blog
   const createBlog = async (data: CreateBlogDTO) => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.post('/blogs/create', data);
+      setBlogs([...blogs, response.data]);
       return response.data;
     } catch (error) {
       console.error("Error creating blog", error);
@@ -68,6 +84,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.put(`/blogs/${id}`, data);
+      setBlogs(blogs.map(blog => blog.id === id ? response.data : blog));
       return response.data;
     } catch (error) {
       console.error("Error updating blog", error);
@@ -85,6 +102,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
       setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
     } catch (error) {
       console.error("Error deleting blog", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -96,6 +114,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
         blogs,
         getAllBlogs,
         getBlogById,
+        getBlogsByUserId,
         createBlog,
         updateBlog,
         deleteBlog,

@@ -1,3 +1,14 @@
+export enum Category {
+  TECHNOLOGY = "TECHNOLOGY",
+  HEALTH = "HEALTH",
+  LIFESTYLE = "LIFESTYLE",
+  EDUCATION = "EDUCATION",
+  BUSINESS = "BUSINESS",
+  SPORTS = "SPORTS",
+  ENTERTAINMENT = "ENTERTAINMENT",
+  OTHERS = "OTHERS"
+}
+
 export interface BlogResponseDTO {
   id: number;
   title: string;

@@ -59,8 +59,7 @@ const ForgetPasswordPage: React.FC = () => {
         to="/"
         className="flex items-center gap-2 font-semibold absolute top-20 pb-10"
       >
-        <img src={Logo} className="h-10 w-10" />
-        <span className="text-2xl font-bold ">DN Dental</span>
+        <span className="text-2xl font-bold ">Bloggie</span>
       </Link>
       <Card className="p-8 shadow-md w-full max-w-md">
         {successMessage ? (

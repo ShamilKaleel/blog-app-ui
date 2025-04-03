@@ -63,9 +63,9 @@ export default function LoginForm() {
           to="/"
           className="flex items-center gap-2 font-semibold lg:absolute top-10 left-10 pb-10"
         >
-          <img src={Logo} className="h-10 w-10" />
+          
 
-          <span className="text-2xl font-bold ">AgriConnect</span>
+          <span className="text-2xl font-bold ">Bloggie</span>
         </Link>
         <div className="px-8 py-16">
           <h1 className="text-2xl font-bold text-center mb-3">
@@ -144,11 +144,11 @@ export default function LoginForm() {
           </form>
         </div>
       </div>
-      <div className="hidden lg:block bg-primary relative object-cover ">
-        <img src={Pattern} alt="login" className="h-screen w-full absolute" />
-        <div className="pl-10 flex justify-center w-full h-screen items-center   ">
-          <img src={LoginImage} alt="login" className="" />
+      <div className="hidden lg:block relative object-cover ">
+        <div className="pl-10 flex justify-center w-full h-screen items-center">
+          <img src={LoginImage} alt="login" className="w-full h-full object-cover" />
         </div>
+
       </div>
     </div>
   );
