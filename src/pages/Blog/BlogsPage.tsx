@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import BlogCard from "@/components/BlogCard";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
+import CreateBlogPage from "@/pages/Blog/CreateBlogPage";
 
 export default function BlogsPage() {
   const { blogs, getAllBlogs, createBlog, isLoading } = useBlog();
@@ -88,57 +89,15 @@ export default function BlogsPage() {
 
   return (
     <div className="pt-0 px-8 pb-8 mt-10">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Blogs</h1>
-        {authState && (
-          <Button onClick={() => setShowCreateForm(!showCreateForm)}>
-            {showCreateForm ? "Cancel" : "Create New Blog"}
-          </Button>
-        )}
-      </div>
-
-      {/* Blog Creation Form */}
-      {showCreateForm && (
-        <div className="mb-8 p-6 border rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Create New Blog</h2>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                name="title"
-                value={newBlog.title}
-                onChange={handleInputChange}
-                placeholder="Enter blog title"
-              />
-            </div>
-            <div>
-              <Label htmlFor="category">Category</Label>
-              <Input
-                id="category"
-                name="category"
-                value={newBlog.category}
-                onChange={handleInputChange}
-                placeholder="Enter blog category"
-              />
-            </div>
-            <div>
-              <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                value={newBlog.content}
-                onChange={handleInputChange}
-                placeholder="Write your blog content here..."
-                className="min-h-[200px]"
-              />
-            </div>
-          </div>
-          <Button className="mt-4" onClick={handleCreateBlog}>
-            Publish Blog
-          </Button>
-        </div>
+            <div className="flex justify-between items-center mb-6">
+      <h1 className="text-3xl font-bold">Blogs</h1>
+      {authState && (
+      <Button onClick={() => navigate("/create-blog")}>
+        Create New Blog
+      </Button>
       )}
+      </div>
+      
 
       {/* Blog List */}
       {isLoading ? (

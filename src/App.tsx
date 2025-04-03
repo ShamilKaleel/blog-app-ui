@@ -19,6 +19,7 @@ import ResetPasswordPage from "@/pages/Auth/ResetPasswordPage";
 import Layout from "./Layout";
 import BlogsPage from "@/pages/Blog/BlogsPage";
 import BlogDetailPage from "@/pages/Blog/BlogDetailPage";
+import CreateBlogPage from "@/pages/Blog/CreateBlogPage";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { authState, isLording } = useAuth();
@@ -72,6 +73,7 @@ export default function App() {
           }
         ></Route>
          <Route path="/blogs/:id" element={<BlogDetailPage />} />
+         <Route path="/create-blog" element={<CreateBlogPage />} />
 
           <Route path="/" element={<AdminPage />} />
           <Route path="/dentist" element={<DentistPage />} />

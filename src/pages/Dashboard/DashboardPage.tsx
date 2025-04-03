@@ -127,7 +127,7 @@ const BlogHomePage: React.FC = () => {
           >
             <div className="relative">
               <img 
-                src="/api/placeholder/600/450" 
+                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643" 
                 alt="Blog community" 
                 className="rounded-lg shadow-2xl"
               />
