@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -65,11 +66,12 @@ export default function App() {
           <Route
           path="/blogs"
           element={
-            
-              <BlogsPage />
-            
+            <ProtectedRoute>
+                <BlogsPage />
+            </ProtectedRoute>
           }
         ></Route>
+         <Route path="/blogs/:id" element={<BlogDetailPage />} />
 
           <Route path="/" element={<AdminPage />} />
           <Route path="/dentist" element={<DentistPage />} />
@@ -81,15 +83,7 @@ export default function App() {
             !authState ? <ForgetPasswordPage /> : <Navigate to="/" replace />
           }
         />
-        <Route
-          path="/blogs"
-          element={
-            
-              <BlogsPage />
-            
-          }
-        ></Route>
-
+        
         <Route
           path="/reset-password"
           element={

@@ -39,7 +39,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
   const getBlogById = async (id: number) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.get(`/api/blogs/${id}`);
+      const response = await axiosInstance.get(`/blogs/${id}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching blog by ID", error);
@@ -53,7 +53,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
   const createBlog = async (data: CreateBlogDTO) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post('/api/blogs/create', data);
+      const response = await axiosInstance.post('/blogs/create', data);
       return response.data;
     } catch (error) {
       console.error("Error creating blog", error);
@@ -67,7 +67,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
   const updateBlog = async (id: number, data: CreateBlogDTO) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.put(`/api/blogs/${id}`, data);
+      const response = await axiosInstance.put(`/blogs/${id}`, data);
       return response.data;
     } catch (error) {
       console.error("Error updating blog", error);
@@ -81,7 +81,7 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
   const deleteBlog = async (id: number) => {
     setIsLoading(true);
     try {
-      await axiosInstance.delete(`/api/blogs/${id}`);
+      await axiosInstance.delete(`/blogs/${id}`);
       setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
     } catch (error) {
       console.error("Error deleting blog", error);
