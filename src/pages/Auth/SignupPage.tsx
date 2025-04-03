@@ -1,15 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Lorder from "@/components/Lorder";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import Logo from "@/assets/images/Logo.png";
 import axiosInstance from "@/api/axiosInstance";
 // Schema validation using Zod
 const schema = z.object({

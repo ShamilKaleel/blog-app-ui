@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { useBlog } from "@/hooks/useBlog";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { BlogResponseDTO } from "@/types/blogapp";
 import { useAuth } from "@/hooks/useAuth";
 import BlogCard from "@/components/BlogCard";
 import { useNavigate } from "react-router-dom";
-import { Label } from "@/components/ui/label";
-import CreateBlogPage from "@/pages/Blog/CreateBlogPage";
 
 export default function BlogsPage() {
   const { blogs, getAllBlogs, createBlog, isLoading } = useBlog();

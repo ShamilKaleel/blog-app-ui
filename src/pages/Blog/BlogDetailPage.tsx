@@ -157,7 +157,7 @@ export default function BlogDetailPage() {
       await updateComment(editingCommentId, {
         content: editCommentContent,
         blogId: parseInt(id),
-        userId: 1, // Replace with actual user ID from authState
+        userId: authState.id, // Use the actual user ID from authState
       });
 
       setEditingCommentId(null);
@@ -178,6 +178,11 @@ export default function BlogDetailPage() {
         variant: "destructive",
       });
     }
+  };
+
+  // Check if the current user is the comment creator
+  const isCommentCreator = (commenterName: string) => {
+    return authState && authState.username === commenterName;
   };
 
   if (isLoading) {
@@ -276,8 +281,8 @@ export default function BlogDetailPage() {
                       {comment.commenterName}
                     </div>
                     
-                    {/* Show edit/delete options if current user is the commenter */}
-                    {authState && (
+                    {/* Show edit/delete options ONLY if current user is the commenter */}
+                    {isCommentCreator(comment.commenterName) && (
                       <div className="flex space-x-2">
                         <Button 
                           variant="ghost" 

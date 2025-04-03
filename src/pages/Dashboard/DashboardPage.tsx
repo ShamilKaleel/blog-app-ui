@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Link } from "react-router-dom";
-import { useBlog } from "@/hooks/useBlog";
 import { Category } from "@/types/blogapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
