@@ -9,6 +9,7 @@ import {
 import axiosInstance from "@/api/axiosInstance";
 
 interface User {
+  id:number;
   username: string;
   roles: string[];
 }
@@ -55,8 +56,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     axiosInstance
       .get("/auth/user")
       .then(({ data }) => {
-        const { username, roles } = data;
-        dispatch({ type: "SET_USER", payload: { username, roles } });
+        const { username, roles,id } = data;
+        dispatch({ type: "SET_USER", payload: { username, roles,id } });
       })
       .catch((error) => {
         console.error("Error fetching user data:", error.message);
@@ -74,8 +75,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         username,
         password,
       });
-      const { username: user, roles } = response.data;
-      dispatch({ type: "SET_USER", payload: { username: user, roles } });
+      const { username: user, roles,id } = response.data;
+      dispatch({ type: "SET_USER", payload: { username: user, roles,id} });
     } catch (error: any) {
       console.error("Login failed", error);
       throw error.response?.data?.message || "Invalid credentials";

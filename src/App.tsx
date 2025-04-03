@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +17,8 @@ import ForgetPasswordPage from "./pages/Auth/ForgetPasswordPage";
 import { Toaster } from "@/components/ui/toaster";
 import ResetPasswordPage from "@/pages/Auth/ResetPasswordPage";
 import Layout from "./Layout";
+import BlogsPage from "@/pages/Blog/BlogsPage";
+import BlogDetailPage from "@/pages/Blog/BlogDetailPage";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { authState, isLording } = useAuth();
@@ -60,6 +63,15 @@ export default function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/courses" element={<CoursePage />} /> */}
+          <Route
+          path="/blogs"
+          element={
+            <ProtectedRoute>
+                <BlogsPage />
+            </ProtectedRoute>
+          }
+        ></Route>
+         <Route path="/blogs/:id" element={<BlogDetailPage />} />
 
           <Route path="/" element={<AdminPage />} />
           <Route path="/dentist" element={<DentistPage />} />
@@ -71,7 +83,7 @@ export default function App() {
             !authState ? <ForgetPasswordPage /> : <Navigate to="/" replace />
           }
         />
-
+        
         <Route
           path="/reset-password"
           element={

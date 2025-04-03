@@ -20,12 +20,11 @@ interface ChildProps {
 
 const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   const navLinks = [
     { title: "Home", path: "/" },
-    { title: "Education", path: "/education" },
-    { title: "Lands", path: "/lands" },
-    { title: "Jobs", path: "/jobs" },
-    { title: "Community", path: "/community" },
+    { title: "Blogs", path: "/blogs" },
+    // { title: "Jobs", path: "/jobs" },
   ];
 
   const { authState } = useAuth();
