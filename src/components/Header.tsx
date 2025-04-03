@@ -20,9 +20,11 @@ interface ChildProps {
 
 const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "Education", path: "/education" },
+    { title: "Blogs", path: "/blogs" },
     { title: "Lands", path: "/lands" },
     { title: "Jobs", path: "/jobs" },
     { title: "Community", path: "/community" },
