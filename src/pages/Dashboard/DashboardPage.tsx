@@ -77,6 +77,7 @@ const BlogHomePage: React.FC = () => {
   };
 
   return (
+
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative w-full pt-16 pb-20 md:pt-24 md:pb-32 bg-gradient-to-br from-primary/20 to-primary/5">
@@ -134,6 +135,7 @@ const BlogHomePage: React.FC = () => {
               <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full -z-10"></div>
             </div>
           </motion.div>
+
         </div>
       </section>
 
