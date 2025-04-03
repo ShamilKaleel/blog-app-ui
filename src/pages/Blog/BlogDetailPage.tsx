@@ -8,20 +8,22 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { BlogResponseDTO, CommentResponseDTO } from "@/types/blogapp";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User } from "lucide-react";
+import { ArrowLeft, Calendar, Edit, Trash, User } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function BlogDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getBlogById, deleteBlog } = useBlog();
-  const { comments, getCommentsByBlogId, createComment, deleteComment } = useComment();
+  const { comments, getCommentsByBlogId, createComment, deleteComment, updateComment } = useComment();
   const { authState } = useAuth();
   const { toast } = useToast();
 
   const [blog, setBlog] = useState<BlogResponseDTO | null>(null);
   const [newComment, setNewComment] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editCommentContent, setEditCommentContent] = useState("");
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
@@ -35,6 +37,10 @@ export default function BlogDetailPage() {
         if (blogData) {
           setBlog(blogData);
           await getCommentsByBlogId(blogId);
+          
+          // Debug info
+          console.log("Auth state:", authState);
+          console.log("Blog data:", blogData);
         } else {
           toast({
             title: "Blog not found",
@@ -112,6 +118,11 @@ export default function BlogDetailPage() {
   };
 
   const handleDeleteComment = async (commentId: number) => {
+    // Show confirmation dialog
+    if (!window.confirm("Are you sure you want to delete this comment?")) {
+      return;
+    }
+    
     try {
       await deleteComment(commentId);
       toast({
@@ -128,6 +139,46 @@ export default function BlogDetailPage() {
       toast({
         title: "Failed to delete comment",
         description: "An error occurred while deleting the comment",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const startEditComment = (comment: CommentResponseDTO) => {
+    setEditingCommentId(comment.id);
+    setEditCommentContent(comment.content);
+  };
+
+  const cancelEditComment = () => {
+    setEditingCommentId(null);
+    setEditCommentContent("");
+  };
+
+  const handleUpdateComment = async () => {
+    if (!id || !authState || !editingCommentId || !editCommentContent.trim()) return;
+
+    try {
+      await updateComment(editingCommentId, {
+        content: editCommentContent,
+        blogId: parseInt(id),
+        userId: 1, // Replace with actual user ID from authState
+      });
+
+      setEditingCommentId(null);
+      setEditCommentContent("");
+      
+      toast({
+        title: "Comment updated",
+        description: "Your comment has been updated successfully",
+      });
+
+      // Refresh comments
+      await getCommentsByBlogId(parseInt(id));
+    } catch (error) {
+      console.error("Error updating comment:", error);
+      toast({
+        title: "Failed to update comment",
+        description: "An error occurred while updating your comment",
         variant: "destructive",
       });
     }
@@ -229,21 +280,52 @@ export default function BlogDetailPage() {
                       {comment.commenterName}
                     </div>
                     
-                    {/* Show delete option if current user is the commenter */}
-                    {authState && authState.username === comment.commenterName && (
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="h-8 text-destructive hover:text-destructive"
-                      >
-                        Delete
-                      </Button>
+                    {/* Show edit/delete options for all comments during debugging */}
+                    {authState && (
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => startEditComment(comment)}
+                          className="h-8 text-primary hover:text-primary"
+                        >
+                          <Edit className="h-4 w-4 mr-1" /> Edit
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="h-8 text-destructive hover:text-destructive"
+                        >
+                          <Trash className="h-4 w-4 mr-1" /> Delete
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {/* Debug information to see values */}
+                    {authState && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        User: {authState.username} | Commenter: {comment.commenterName}
+                      </div>
                     )}
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p>{comment.content}</p>
+                  {editingCommentId === comment.id ? (
+                    <div className="space-y-2">
+                      <Textarea
+                        value={editCommentContent}
+                        onChange={(e) => setEditCommentContent(e.target.value)}
+                        className="mb-2"
+                      />
+                      <div className="flex space-x-2">
+                        <Button onClick={handleUpdateComment} size="sm">Save</Button>
+                        <Button onClick={cancelEditComment} variant="outline" size="sm">Cancel</Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p>{comment.content}</p>
+                  )}
                 </CardContent>
               </Card>
             ))}

@@ -25,7 +25,7 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
   const getCommentsByBlogId = async (blogId: number) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.get(`/api/comments/blog/${blogId}`);
+      const response = await axiosInstance.get(`/comments/blog/${blogId}`);
       setComments(response.data);
     } catch (error) {
       console.error("Error fetching comments", error);
@@ -38,7 +38,7 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
   const createComment = async (data: CreateCommentDTO) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post('/api/comments/create', data);
+      const response = await axiosInstance.post('/comments/create', data);
       setComments((prevComments) => [...prevComments, response.data]);
       return response.data;
     } catch (error) {
@@ -53,7 +53,7 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
   const updateComment = async (id: number, data: CreateCommentDTO) => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.put(`/api/comments/${id}`, data);
+      const response = await axiosInstance.put(`/comments/${id}`, data);
       setComments((prevComments) =>
         prevComments.map((comment) =>
           comment.id === id ? { ...comment, ...response.data } : comment
@@ -72,7 +72,7 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
   const deleteComment = async (id: number) => {
     setIsLoading(true);
     try {
-      await axiosInstance.delete(`/api/comments/${id}`);
+      await axiosInstance.delete(`/comments/${id}`);
       setComments((prevComments) => prevComments.filter((comment) => comment.id !== id));
     } catch (error) {
       console.error("Error deleting comment", error);
