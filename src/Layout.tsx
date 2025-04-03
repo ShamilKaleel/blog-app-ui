@@ -6,16 +6,27 @@ import { useAuth } from "@/hooks/useAuth";
 import { ResponsiveDialog } from "@/components/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
+import { useToast } from "@/hooks/use-toast";
 export default function Layout() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { logout } = useAuth();
-
+  const { toast } = useToast();
   const handleLogout = async () => {
     try {
       await logout();
+      toast({
+        title: "Logout Successful",
+        description: "You have been logged out successfully",
+        
+      });
     } catch (error: any) {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description:
+          error.response?.data?.details?.error || "An error occurred",
+        variant: "destructive",
+      });
       console.log(error);
     } finally {
       setIsOpen(false);

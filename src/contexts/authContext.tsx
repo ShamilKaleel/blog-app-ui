@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     setIsLording(true);
     try {
-      await axiosInstance.post("/auth/signout", {});
+      await axiosInstance.post("/users/logout", {});
       dispatch({ type: "CLEAR_USER" });
     } catch (error: any) {
       console.error("Logout failed", error);
