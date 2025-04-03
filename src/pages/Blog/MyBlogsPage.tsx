@@ -8,6 +8,17 @@ import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import axiosInstance from "@/api/axiosInstance";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function MyBlogsPage() {
   const { authState } = useAuth();
@@ -15,6 +26,8 @@ export default function MyBlogsPage() {
   const [myBlogs, setMyBlogs] = useState<BlogResponseDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { deleteBlog } = useBlog();
+  const [blogToDelete, setBlogToDelete] = useState<number | null>(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   useEffect(() => {
     fetchMyBlogs();
@@ -40,9 +53,16 @@ export default function MyBlogsPage() {
     }
   };
 
-  const handleDeleteBlog = async (id: number) => {
+  const confirmDelete = (id: number) => {
+    setBlogToDelete(id);
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteBlog = async () => {
+    if (blogToDelete === null) return;
+    
     try {
-      await deleteBlog(id);
+      await deleteBlog(blogToDelete);
       toast({
         title: "Blog deleted",
         description: "Your blog was deleted successfully",
@@ -56,11 +76,36 @@ export default function MyBlogsPage() {
         description: "Failed to delete the blog. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setShowDeleteDialog(false);
+      setBlogToDelete(null);
     }
   };
 
   return (
     <div className="pt-0 px-8 pb-8 mt-10">
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              blog post and remove it from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteBlog}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">My Blogs</h1>
         <Link to="/create-blog">
@@ -103,16 +148,12 @@ export default function MyBlogsPage() {
                     </Button>
                   </Link>
                   <div className="flex gap-2">
-                    <Link to={`/edit-blog/${blog.id}`}>
-                      <Button variant="outline" size="icon" className="h-8 w-8">
-                        <Edit size={16} />
-                      </Button>
-                    </Link>
+                    
                     <Button 
                       variant="outline" 
                       size="icon" 
                       className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                      onClick={() => handleDeleteBlog(blog.id)}
+                      onClick={() => confirmDelete(blog.id)}
                     >
                       <Trash2 size={16} />
                     </Button>
