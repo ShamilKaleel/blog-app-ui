@@ -21,7 +21,7 @@ export default function BlogsPage() {
   const [newBlog, setNewBlog] = useState({
     title: "",
     content: "",
-    category: "General"
+    category: "HEALTH"
   });
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function BlogsPage() {
       setNewBlog({
         title: "",
         content: "",
-        category: "General"
+        category: ""
       });
       
       setShowCreateForm(false);

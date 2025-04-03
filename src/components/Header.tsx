@@ -23,11 +23,8 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   
   const navLinks = [
     { title: "Home", path: "/" },
-    { title: "Education", path: "/education" },
     { title: "Blogs", path: "/blogs" },
-    { title: "Lands", path: "/lands" },
-    { title: "Jobs", path: "/jobs" },
-    { title: "Community", path: "/community" },
+    // { title: "Jobs", path: "/jobs" },
   ];
 
   const { authState } = useAuth();

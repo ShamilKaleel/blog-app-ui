@@ -37,10 +37,6 @@ export default function BlogDetailPage() {
         if (blogData) {
           setBlog(blogData);
           await getCommentsByBlogId(blogId);
-          
-          // Debug info
-          console.log("Auth state:", authState);
-          console.log("Blog data:", blogData);
         } else {
           toast({
             title: "Blog not found",
@@ -64,14 +60,14 @@ export default function BlogDetailPage() {
     fetchBlogDetails();
   }, [id]);
 
-  const handleSubmitComment = async () => {
+  const handleCreateComment = async () => {
     if (!id || !authState || !newComment.trim()) return;
 
     try {
       await createComment({
         content: newComment,
         blogId: parseInt(id),
-        userId: 1, // Replace with actual user ID from authState
+        userId: authState.id, // This should be updated to use the correct user ID
       });
 
       setNewComment("");
@@ -258,7 +254,7 @@ export default function BlogDetailPage() {
               placeholder="Write a comment..."
               className="mb-2"
             />
-            <Button onClick={handleSubmitComment} disabled={!newComment.trim()}>
+            <Button onClick={handleCreateComment} disabled={!newComment.trim()}>
               Post Comment
             </Button>
           </div>
@@ -280,7 +276,7 @@ export default function BlogDetailPage() {
                       {comment.commenterName}
                     </div>
                     
-                    {/* Show edit/delete options for all comments during debugging */}
+                    {/* Show edit/delete options if current user is the commenter */}
                     {authState && (
                       <div className="flex space-x-2">
                         <Button 
@@ -299,13 +295,6 @@ export default function BlogDetailPage() {
                         >
                           <Trash className="h-4 w-4 mr-1" /> Delete
                         </Button>
-                      </div>
-                    )}
-                    
-                    {/* Debug information to see values */}
-                    {authState && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        User: {authState.username} | Commenter: {comment.commenterName}
                       </div>
                     )}
                   </div>
