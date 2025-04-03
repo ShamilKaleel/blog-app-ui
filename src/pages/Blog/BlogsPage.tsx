@@ -85,11 +85,11 @@ export default function BlogsPage() {
     <div className="pt-0 px-8 pb-8 mt-10">
             <div className="flex justify-between items-center mb-6">
       <h1 className="text-3xl font-bold">Blogs</h1>
-      {authState && (
+      {/* {authState && (
       <Button onClick={() => navigate("/create-blog")}>
         Create New Blog
       </Button>
-      )}
+      )} */}
       </div>
       
 

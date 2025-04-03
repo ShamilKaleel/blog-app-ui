@@ -24,6 +24,7 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "Blogs", path: "/blogs" },
+    { title: "My Blogs", path: "/my-blogs" },
     // { title: "Jobs", path: "/jobs" },
   ];
 
