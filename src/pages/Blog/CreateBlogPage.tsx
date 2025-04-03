@@ -18,7 +18,7 @@ export default function CreateBlogPage() {
   const [newBlog, setNewBlog] = useState({
     title: "",
     content: "",
-    category: "HEALTH"
+    category: "TECHNOLOGY"
   });
 
   const categories = [
@@ -76,7 +76,7 @@ export default function CreateBlogPage() {
       });
 
       // Redirect to blogs page after successful creation
-      navigate("/blogs");
+      navigate("/my-blogs");
     } catch (error: any) {
       console.error("Error creating blog:", error);
       toast({
@@ -91,7 +91,7 @@ export default function CreateBlogPage() {
     <div className="pt-0 px-8 pb-8 mt-10 max-w-3xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Create New Blog</h1>
-        <Button variant="outline" onClick={() => navigate("/blogs")}>
+        <Button variant="outline" onClick={() => navigate("/my-blogs")}>
           Cancel
         </Button>
       </div>
