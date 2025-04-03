@@ -63,8 +63,8 @@ const Header: React.FC<ChildProps> = ({ setIsOpen }) => {
       >
         <div className="flex justify-between items-center lg:hidden mb-6">
           <Link to="/" className="flex items-center gap-2">
-            <img src={Logo} alt="Logo" className="h-8 w-8" />
-            <span className="font-bold text-xl text-primary">AgriConnect</span>
+            
+            <span className="font-bold text-xl text-primary">Bloggie</span>
           </Link>
           <button onClick={toggleMenu} className="text-gray-600">
             <X className="h-6 w-6" />
