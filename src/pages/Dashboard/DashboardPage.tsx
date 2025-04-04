@@ -88,7 +88,7 @@ const BlogHomePage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Share Your Love Story,  <br />
+              Share Your Story,  <br />
               <span className="text-primary">Inspire the World</span>
             </motion.h1>
             <motion.p 
